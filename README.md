@@ -3,8 +3,10 @@
 
   <h1>youtube-transcript-digest</h1>
 
+  <p><strong>English</strong> · <a href="README.zh-CN.md">简体中文</a></p>
+
   <p><strong>Turn long-form video and podcast transcripts into evidence-aware Chinese insight documents.</strong></p>
-  <p>不是“字幕搬运工”，而是一条从取稿、重组、证据审计到飞书交付的完整工作流。</p>
+  <p>Not another transcript summarizer—a complete workflow from extraction and restructuring to evidence auditing and Lark delivery.</p>
 
   <p>
     <a href="SKILL.md"><img alt="AIME Skill" src="https://img.shields.io/badge/AIME-Skill-4C6FFF?style=flat-square"></a>
@@ -14,95 +16,95 @@
   </p>
 
   <p>
-    <a href="#为什么做这个-skill">为什么</a> ·
-    <a href="#它能做什么">能力</a> ·
-    <a href="#快速开始">快速开始</a> ·
-    <a href="#工作流">工作流</a> ·
-    <a href="#项目结构">项目结构</a>
+    <a href="#why-this-skill-exists">Why</a> ·
+    <a href="#what-it-does">Features</a> ·
+    <a href="#quick-start">Quick start</a> ·
+    <a href="#workflow">Workflow</a> ·
+    <a href="#project-structure">Structure</a>
   </p>
 </div>
 
 ---
 
-## 为什么做这个 Skill
+## Why this Skill exists
 
-长视频最浪费人的地方，不是“没有字幕”，而是字幕拿到以后仍然不能直接用：
+The hardest part of working with long-form video is not obtaining a transcript. It is turning that transcript into something you can actually use:
 
-- 逐句翻译保留了原顺序，也保留了原内容的松散和重复；
-- 嘉宾的事实、自述、推断和营销口径混在一起；
-- 摘要看起来完整，却没有原话、时间戳和证据边界；
-- 文档写完了，但读者仍然不知道哪条判断值得带走。
+- Literal translation preserves the original order—and all of its repetition and looseness.
+- Facts, first-person claims, inference, and marketing language are mixed together.
+- Summaries often omit the original quote, timestamp, and evidentiary boundary.
+- A document may look complete while leaving readers unsure which conclusions are safe to carry forward.
 
-`youtube-transcript-digest` 把问题拆成两层：
+`youtube-transcript-digest` solves the problem in two layers:
 
-1. **重组**：围绕论点重排内容，让每一节只解决一个问题；
-2. **审计**：核对利益关系、外部证据与“零提及”，逐节标注置信度。
+1. **Restructure** — reorganize the conversation around arguments, with each section resolving one question.
+2. **Audit** — examine incentives, external evidence, and meaningful omissions, then grade every section by confidence.
 
-最终交付的不是“更短的字幕”，而是一份**可引用、可回查、可判断**的中文洞见文档。
+The result is not merely a shorter transcript. It is a Chinese insight document that is **quotable, traceable, and decision-ready**.
 
-## 它能做什么
+## What it does
 
-| 能力 | 结果 |
+| Capability | Output |
 |---|---|
-| 获取 transcript | 从 YouTube、Substack / Lenny’s Newsletter 或现有字幕文件取稿 |
-| 统一字幕格式 | 处理 JSON3、VTT、SRT、网页 transcript panel 与纯文本 |
-| 中文精译与重组 | 按用户提纲或对谈逻辑组织，不做机械逐句对译 |
-| 置信度审计 | 区分“高可信 / 新信息且合理 / 营销口径” |
-| 可回查引用 | 保留英文原话、中文翻译、说话人和时间戳 |
-| 飞书文档交付 | TL;DR 锚点、判断式章节标题、可编辑飞书画板、总结清单 |
-| 延伸材料处理 | 将节目郑重推荐的文章、论文或清单单独翻译成文档 |
-| 中文语言质检 | 使用“判断先行—证据跟进—边界收束”的内置规范去 AI 味 |
+| Transcript retrieval | Collect transcripts from YouTube, Substack / Lenny’s Newsletter, or existing subtitle files |
+| Format normalization | Parse JSON3, VTT, SRT, transcript panels, and plain text |
+| Chinese translation and restructuring | Follow a user-provided outline or the conversation’s own logic instead of translating mechanically |
+| Confidence audit | Separate high-confidence facts, plausible first-party information, and marketing claims |
+| Traceable quotations | Preserve the English quote, Chinese translation, speaker, and timestamp |
+| Lark document delivery | Produce anchored TL;DRs, judgment-led headings, editable whiteboards, and takeaway lists |
+| Follow-up material | Translate strongly recommended articles, papers, or checklists into separate documents |
+| Chinese language QA | Apply an embedded “judgment → evidence → boundary” writing standard to remove generic AI prose |
 
-### 输入与默认产物
+### Input-to-output routing
 
-| 你怎么说 | 默认交付 |
+| What you ask for | Default deliverable |
 |---|---|
-| “获取 transcript” | 带元信息与时间戳的本地 Markdown |
-| “翻译全文” | 英文原稿 + 中文逐字稿 |
-| “整理主要洞见” | 重组后的中文洞见飞书文档 |
-| “按这个提纲整理” | 严格按提纲顺序组织的洞见文档 |
-| “总结一下” | 更短的飞书摘要，不做全文精译 |
+| “Get the transcript” | Local Markdown with metadata and timestamps |
+| “Translate the full transcript” | English source transcript plus a Chinese transcript |
+| “Extract the key insights” | Restructured Chinese insight document in Lark |
+| “Organize it using this outline” | Insight document following the outline in the original order |
+| “Summarize this” | Shorter Lark summary without a full translation |
 
-## 快速开始
+## Quick start
 
-### 1. 安装为 AIME Skill
+### 1. Install as an AIME Skill
 
-把仓库放到你的用户 Skill 目录：
+Clone the repository into your user Skill directory:
 
 ```bash
 git clone https://github.com/chengjialu8888/YouTube-to-doc.git \
   user_skills/youtube-transcript-digest
 ```
 
-也可以下载 ZIP 后，在 AIME 中作为用户 Skill 导入。Skill 的入口定义在 [`SKILL.md`](SKILL.md)。
+You can also download the repository as a ZIP and import it as a user Skill in AIME. The Skill entry point is [`SKILL.md`](SKILL.md).
 
-### 2. 准备脚本依赖
+### 2. Install the script dependency
 
 ```bash
 python3 -m pip install requests
 ```
 
-### 3. 直接用自然语言调用
+### 3. Invoke it in natural language
 
 ```text
-帮我获取这期 YouTube 视频的 transcript：<URL>
+Get the transcript for this YouTube video: <URL>
 ```
 
 ```text
-用 youtube-transcript-digest 整理这场对谈。
-重点回答：产品判断、关键决策、反常识观点和可执行建议。
+Use youtube-transcript-digest to turn this interview into a Chinese insight document.
+Focus on product judgments, key decisions, counterintuitive ideas, and actionable advice.
 ```
 
 ```text
-按下面提纲翻译并整理主要洞见：
+Translate and organize the interview using this outline:
 1. ...
 2. ...
 3. ...
 ```
 
-### 4. 只使用字幕脚本
+### 4. Use the transcript utilities directly
 
-从 YouTube 获取字幕并输出标准 Markdown：
+Fetch a YouTube transcript and write normalized Markdown:
 
 ```bash
 python3 scripts/fetch_youtube_transcript.py '<youtube-url-or-id>' \
@@ -110,114 +112,116 @@ python3 scripts/fetch_youtube_transcript.py '<youtube-url-or-id>' \
   -o transcript.md
 ```
 
-标准化已有字幕：
+Normalize an existing subtitle file:
 
 ```bash
 python3 scripts/format_transcript.py raw.vtt \
-  --title '标题 — 逐字稿（Transcript）' \
-  --meta '视频链接: https://...' \
-  --meta '字幕来源: 官方人工字幕' \
+  --title 'Title — Transcript' \
+  --meta 'Source: https://...' \
+  --meta 'Caption source: official human-authored captions' \
   -o transcript.md
 ```
 
-支持 `json3`、`vtt`、`srt`、`panel` 与 `plain`；脚本会自动识别格式、合并碎片并清理自动字幕的滚动重复。
+The formatter supports `json3`, `vtt`, `srt`, `panel`, and `plain`. It detects the format, merges fragments, removes rolling ASR duplication, and identifies speakers where possible.
 
 > [!NOTE]
-> YouTube 可能拦截数据中心 IP。抓取脚本返回退出码 `3` 时，应刷新登录 cookie 或改用网页 transcript 面板，不要盲目重试。
+> YouTube may block requests from datacenter IPs. If the fetcher exits with code `3`, refresh the authenticated cookie or use the page’s transcript panel. Blind retries will not help.
 
-## 工作流
+## Workflow
 
 ```text
-视频 / 播客链接
-      ↓
-获取字幕与元信息
-      ↓
-标准化时间戳、说话人与来源
-      ↓
-检查利益关系、外部证据与“零提及”
-      ↓
-按提纲或叙事逻辑重组
-      ↓
-逐节标注置信度
-      ↓
-语言质检 + 可编辑飞书画板
-      ↓
-飞书洞见文档 / Markdown 逐字稿
+Video / podcast URL
+        ↓
+Retrieve transcript and metadata
+        ↓
+Normalize timestamps, speakers, and source labels
+        ↓
+Inspect incentives, external evidence, and omissions
+        ↓
+Restructure by outline or narrative logic
+        ↓
+Assign confidence at section level
+        ↓
+Run language QA + create editable Lark whiteboards
+        ↓
+Lark insight document / Markdown transcript
 ```
 
-### 置信度不是装饰
+### Confidence is not decoration
 
-| 档位 | 判断标准 | 建议用法 |
+| Level | Standard | Recommended use |
 |---|---|---|
-| ✅ **高可信** | 被一手实测、官方材料或多个独立来源印证 | 可作为事实引用 |
-| 💡 **新信息且合理** | 只有当事人视角，但细节自洽且符合公开时间线 | 可作产品史素材，不宜当成已证实事实 |
-| ❗ **营销口径** | 与外部证据冲突，或属于无法证伪的自我评价 | 明确标红旗并写清冲突点 |
+| ✅ **High confidence** | Confirmed by first-hand testing, official material, or multiple independent sources | Safe to cite as fact |
+| 💡 **New and plausible** | Available only from the speaker, but internally coherent and consistent with the public timeline | Useful as product-history material, not as independently verified fact |
+| ❗ **Marketing claim** | Conflicts with external evidence or relies on unfalsifiable self-assessment | Flag the conflict explicitly; do not quote it as fact |
 
-完整判定方法见 [`references/confidence-audit.md`](references/confidence-audit.md)。
+See [`references/confidence-audit.md`](references/confidence-audit.md) for the full methodology.
 
-### 输出文档长什么样
+### Default document blueprint
 
-默认飞书文档包含：
+A standard Lark deliverable includes:
 
-1. 一张图看完；
-2. 五条主要判断；
-3. 来源、利益关系与置信度框架；
-4. 带正文锚点的 TL;DR；
-5. “主题：一句判断”格式的正文各章；
-6. 每章末尾的置信度说明；
-7. `Summary：可以搬走的 N 条`。
+1. A one-image overview;
+2. Five primary judgments;
+3. Source context, incentives, and the confidence framework;
+4. A TL;DR with anchors into the body;
+5. Judgment-led chapter titles in the form `Topic: conclusion`;
+6. A confidence note at the end of each chapter;
+7. `Summary: N ideas worth taking away`.
 
-详细结构见 [`references/lark-doc-blueprint.md`](references/lark-doc-blueprint.md)。
+See [`references/lark-doc-blueprint.md`](references/lark-doc-blueprint.md) for the complete structure.
 
-## 设计原则
+## Design principles
 
-- **判断先行**：标题必须表达结论，不写“GTM 策略”这类空标签。
-- **证据可回查**：关键原话保留英文、中文和时间戳。
-- **事实与推断分开**：整理者推断统一加 `〔推断〕`。
-- **审计先于写作**：先判断证据强弱，再决定正文语气。
-- **不静悄悄删内容**：提纲外但重要的信息应单独收纳。
-- **图片必须线上复核**：飞书画板交付前导出 preview 检查。
-- **外部用户可复现**：核心语言规范和审计规则全部随仓库分发。
+- **Lead with the judgment.** A heading should make a claim, not merely label a topic.
+- **Keep evidence traceable.** Important quotations retain the English source, Chinese translation, and timestamp.
+- **Separate fact from inference.** Editor inference is marked with `〔推断〕`.
+- **Audit before writing.** Evidence strength determines the tone of each section.
+- **Do not silently discard material.** Important content outside the outline belongs in a separate section.
+- **Review visuals online.** Export every Lark whiteboard preview before delivery.
+- **Make the method portable.** Core language and audit standards ship with the repository rather than depending on private prompts.
 
-## 项目结构
+## Project structure
 
 ```text
 .
-├── SKILL.md                           # Skill 入口与完整执行流程
+├── README.md                          # English project homepage
+├── README.zh-CN.md                    # Chinese documentation
+├── SKILL.md                           # Skill entry point and execution workflow
 ├── assets/
-│   └── banner.jpg                     # README 头图
+│   └── banner.jpg                     # README hero banner
 ├── references/
-│   ├── confidence-audit.md            # 三档置信度审计方法
-│   ├── fetching-transcripts.md        # YouTube / Substack 取稿手册
-│   ├── lark-doc-blueprint.md          # 飞书文档结构与 XML 约定
-│   └── translation-style.md           # 中文精译和去 AI 味规范
+│   ├── confidence-audit.md            # Three-level confidence audit
+│   ├── fetching-transcripts.md        # YouTube / Substack retrieval guide
+│   ├── lark-doc-blueprint.md          # Lark document structure and XML conventions
+│   └── translation-style.md           # Chinese translation and language QA rules
 └── scripts/
-    ├── fetch_youtube_transcript.py    # YouTube 字幕与元信息抓取
-    └── format_transcript.py           # 多格式字幕标准化
+    ├── fetch_youtube_transcript.py    # YouTube transcript and metadata retrieval
+    └── format_transcript.py           # Multi-format transcript normalization
 ```
 
-## 边界与已知限制
+## Boundaries and known limitations
 
-- 本项目不绕过付费墙、DRM 或平台访问控制；
-- 无字幕的视频需要额外 ASR，当前脚本不会自动下载音频转写；
-- 自动字幕中的专有名词可能出错，关键引用应人工复核；
-- 飞书文档和可编辑画板能力依赖运行环境提供相应的 Lark / Feishu 工具；
-- 置信度档位是证据管理工具，不等于对嘉宾人格或产品价值的评价。
+- The project does not bypass paywalls, DRM, or platform access controls.
+- Videos without caption tracks require a separate ASR step; the current fetcher does not download and transcribe audio automatically.
+- Proper nouns in automatic captions may be wrong; verify important quotations manually.
+- Lark documents and editable whiteboards require corresponding Lark / Feishu tools in the runtime environment.
+- Confidence grades are evidence-management labels, not judgments about a guest’s character or a product’s overall value.
 
-## 参与贡献
+## Contributing
 
-欢迎提交 Issue 或 Pull Request，尤其是：
+Issues and pull requests are welcome, especially for:
 
-- 新字幕来源适配；
-- transcript 清洗与说话人识别改进；
-- 真实案例中的误判与审计规则修正；
-- 飞书文档结构和可视化质量优化。
+- New transcript source adapters;
+- Better transcript cleanup and speaker detection;
+- Corrections to confidence-audit rules based on real cases;
+- Improvements to Lark document structure and visual quality.
 
-提交前请阅读 [`CONTRIBUTING.md`](CONTRIBUTING.md)。
+Read [`CONTRIBUTING.md`](CONTRIBUTING.md) before submitting a change.
 
 ---
 
 <div align="center">
   <strong>Transcript → Evidence → Insight</strong><br/>
-  <sub>让长视频不只“被总结”，而是变成可验证、可复用的判断。</sub>
+  <sub>Turn long-form media into conclusions people can verify and reuse.</sub>
 </div>
